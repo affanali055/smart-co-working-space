@@ -15,18 +15,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS configurations
-origins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -71,11 +62,11 @@ def seed_data():
             owner_user = models.User(
                 email="owner@cowork.com",
                 hashed_password=owner_pwd,
-                full_name="Sarah Spaceowner",
+                full_name="Affan Space Owner",
                 role="owner",
                 phone="+1 (555) 024-5566"
             )
-            regular_user = models.User(
+            regular_user = models.User(   
                 email="user@cowork.com",
                 hashed_password=user_pwd,
                 full_name="Devon Developer",
@@ -160,3 +151,8 @@ def seed_data():
         print(f"Error seeding database: {e}")
     finally:
         db.close()
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True)
+

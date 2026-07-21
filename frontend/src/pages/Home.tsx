@@ -42,11 +42,13 @@ export const Home: React.FC = () => {
     "High-speed Wi-Fi",
     "Free Parking",
     "Cafeteria / Coffee",
-    "24/7 Power Backup",
     "Meeting Rooms",
     "CCTV & Security",
     "Air Conditioning",
-    "Printing Services"
+    "Smoking zone",
+    "private pool",
+    "gaming zone",
+
   ];
 
   const fetchSpaces = async () => {
@@ -54,13 +56,13 @@ export const Home: React.FC = () => {
     try {
       // Build query string
       const params = new URLSearchParams();
-      
+
       if (searchLocation) params.append('location', searchLocation);
       if (searchCapacity) params.append('capacity', searchCapacity.toString());
       if (searchArea) params.append('min_area', searchArea.toString());
       if (searchPrice) params.append('max_price', searchPrice.toString());
       if (searchType) params.append('workspace_type', searchType);
-      
+
       selectedAmenities.forEach(am => {
         params.append('amenities', am);
       });
@@ -70,7 +72,7 @@ export const Home: React.FC = () => {
         if (searchLocation) params.append('match_location', searchLocation);
         if (searchCapacity) params.append('match_capacity', searchCapacity.toString());
         if (searchPrice) params.append('match_price', searchPrice.toString());
-        
+
         selectedAmenities.forEach(am => {
           params.append('match_amenities', am);
         });
@@ -81,7 +83,7 @@ export const Home: React.FC = () => {
         if (matchCollab >= 6) expectationTags.push('collaborative', 'creative');
         if (matchSocial >= 6) expectationTags.push('social', 'community');
         if (matchFocus <= 4) expectationTags.push('social', 'vibrant'); // opposite
-        
+
         if (expectationTags.length > 0) {
           params.append('match_expectations', expectationTags.join(','));
         }
@@ -107,7 +109,7 @@ export const Home: React.FC = () => {
   }, [searchLocation, searchCapacity, searchArea, searchPrice, searchType, selectedAmenities, isSmartMatching, matchFocus, matchCollab, matchSocial]);
 
   const handleAmenityChange = (name: string) => {
-    setSelectedAmenities(prev => 
+    setSelectedAmenities(prev =>
       prev.includes(name) ? prev.filter(x => x !== name) : [...prev, name]
     );
   };
@@ -152,8 +154,8 @@ export const Home: React.FC = () => {
         <aside className="glass-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <h2 style={{ fontSize: '18px', fontWeight: '700' }}>Search Filters</h2>
-            <button 
-              onClick={resetFilters} 
+            <button
+              onClick={resetFilters}
               style={{ background: 'none', border: 'none', color: '#60a5fa', fontSize: '13px', cursor: 'pointer', fontWeight: '600' }}
             >
               Reset All
@@ -162,20 +164,20 @@ export const Home: React.FC = () => {
 
           <div className="filter-group">
             <label className="filter-label">City / Location</label>
-            <input 
-              type="text" 
-              className="input-field" 
-              placeholder="e.g. San Francisco" 
-              value={searchLocation} 
-              onChange={e => setSearchLocation(e.target.value)} 
+            <input
+              type="text"
+              className="input-field"
+              placeholder="e.g. San Francisco"
+              value={searchLocation}
+              onChange={e => setSearchLocation(e.target.value)}
             />
           </div>
 
           <div className="filter-group">
             <label className="filter-label">Workspace Type</label>
-            <select 
-              className="input-field" 
-              value={searchType} 
+            <select
+              className="input-field"
+              value={searchType}
               onChange={e => setSearchType(e.target.value)}
             >
               <option value="">All Spaces</option>
@@ -187,34 +189,34 @@ export const Home: React.FC = () => {
 
           <div className="filter-group">
             <label className="filter-label">Team Size (Persons)</label>
-            <input 
-              type="number" 
-              className="input-field" 
-              placeholder="Minimum Capacity" 
-              value={searchCapacity} 
-              onChange={e => setSearchCapacity(e.target.value === '' ? '' : parseInt(e.target.value))} 
+            <input
+              type="number"
+              className="input-field"
+              placeholder="Minimum Capacity"
+              value={searchCapacity}
+              onChange={e => setSearchCapacity(e.target.value === '' ? '' : parseInt(e.target.value))}
             />
           </div>
 
           <div className="filter-group">
             <label className="filter-label">Min Area (Sq.Ft.)</label>
-            <input 
-              type="number" 
-              className="input-field" 
-              placeholder="e.g. 100" 
-              value={searchArea} 
-              onChange={e => setSearchArea(e.target.value === '' ? '' : parseFloat(e.target.value))} 
+            <input
+              type="number"
+              className="input-field"
+              placeholder="e.g. 100"
+              value={searchArea}
+              onChange={e => setSearchArea(e.target.value === '' ? '' : parseFloat(e.target.value))}
             />
           </div>
 
           <div className="filter-group">
             <label className="filter-label">Max Price per Hour ($)</label>
-            <input 
-              type="number" 
-              className="input-field" 
-              placeholder="Hourly limit" 
-              value={searchPrice} 
-              onChange={e => setSearchPrice(e.target.value === '' ? '' : parseFloat(e.target.value))} 
+            <input
+              type="number"
+              className="input-field"
+              placeholder="Hourly limit"
+              value={searchPrice}
+              onChange={e => setSearchPrice(e.target.value === '' ? '' : parseFloat(e.target.value))}
             />
           </div>
 
@@ -223,10 +225,10 @@ export const Home: React.FC = () => {
             <div className="checkbox-grid">
               {availableAmenitiesList.map(am => (
                 <label key={am} className="checkbox-label">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedAmenities.includes(am)} 
-                    onChange={() => handleAmenityChange(am)} 
+                  <input
+                    type="checkbox"
+                    checked={selectedAmenities.includes(am)}
+                    onChange={() => handleAmenityChange(am)}
                   />
                   <span style={{ fontSize: '12px' }}>{am.split(' ')[0]}</span>
                 </label>
@@ -244,16 +246,16 @@ export const Home: React.FC = () => {
               <h3>Expectations Smart Matching Engine</h3>
               <div style={{ marginLeft: 'auto' }}>
                 <label className="checkbox-label" style={{ fontWeight: '600', color: '#c084fc' }}>
-                  <input 
-                    type="checkbox" 
-                    checked={isSmartMatching} 
-                    onChange={e => setIsSmartMatching(e.target.checked)} 
+                  <input
+                    type="checkbox"
+                    checked={isSmartMatching}
+                    onChange={e => setIsSmartMatching(e.target.checked)}
                   />
                   Enable Smart Match
                 </label>
               </div>
             </div>
-            
+
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
               Set your workstyle alignment expectations. NexSpace will calculate compatibility scores (0-100%) and sort spaces accordingly.
             </p>
@@ -264,14 +266,14 @@ export const Home: React.FC = () => {
                   <span>Quiet Focus</span>
                   <span style={{ color: '#c084fc', fontWeight: '600' }}>{matchFocus}/10</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="10" 
-                  className="range-slider" 
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  className="range-slider"
                   disabled={!isSmartMatching}
-                  value={matchFocus} 
-                  onChange={e => setMatchFocus(parseInt(e.target.value))} 
+                  value={matchFocus}
+                  onChange={e => setMatchFocus(parseInt(e.target.value))}
                 />
                 <div className="slider-labels">
                   <span>Energetic</span>
@@ -284,14 +286,14 @@ export const Home: React.FC = () => {
                   <span>Team Collaboration</span>
                   <span style={{ color: '#c084fc', fontWeight: '600' }}>{matchCollab}/10</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="10" 
-                  className="range-slider" 
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  className="range-slider"
                   disabled={!isSmartMatching}
-                  value={matchCollab} 
-                  onChange={e => setMatchCollab(parseInt(e.target.value))} 
+                  value={matchCollab}
+                  onChange={e => setMatchCollab(parseInt(e.target.value))}
                 />
                 <div className="slider-labels">
                   <span>Solo Work</span>
@@ -304,14 +306,14 @@ export const Home: React.FC = () => {
                   <span>Social Connection</span>
                   <span style={{ color: '#c084fc', fontWeight: '600' }}>{matchSocial}/10</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="10" 
-                  className="range-slider" 
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  className="range-slider"
                   disabled={!isSmartMatching}
-                  value={matchSocial} 
-                  onChange={e => setMatchSocial(parseInt(e.target.value))} 
+                  value={matchSocial}
+                  onChange={e => setMatchSocial(parseInt(e.target.value))}
                 />
                 <div className="slider-labels">
                   <span>Highly Private</span>
@@ -346,10 +348,10 @@ export const Home: React.FC = () => {
               {spaces.map(space => (
                 <div key={space.id} className="glass-card space-card">
                   <div className="space-img-container">
-                    <img 
-                      src={space.image_url || 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800'} 
-                      alt={space.name} 
-                      className="space-img" 
+                    <img
+                      src={space.image_url || 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800'}
+                      alt={space.name}
+                      className="space-img"
                     />
                     {isSmartMatching ? (
                       <div className="match-badge">
@@ -366,7 +368,7 @@ export const Home: React.FC = () => {
 
                   <div className="space-type">{getWorkspaceTypeLabel(space.type)}</div>
                   <h4 className="space-name">{space.name}</h4>
-                  
+
                   <div className="space-loc">
                     <span className="material-symbols-outlined">location_on</span>
                     {space.location}

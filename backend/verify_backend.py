@@ -7,7 +7,7 @@ def test_database_queries():
     print("Verifying database models and connections...")
     
     # Initialize DB (creates file and tables if not exist)
-    Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)  
     
     # Seed data
     seed_data()
